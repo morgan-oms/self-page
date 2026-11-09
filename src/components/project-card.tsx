@@ -50,6 +50,7 @@ export function ProjectCard({
   links,
   className,
 }: Props) {
+  const isExternal = !!href && /^https?:\/\//.test(href);
   return (
     <div
       className={cn(
@@ -60,8 +61,8 @@ export function ProjectCard({
       <div className="relative shrink-0">
         <a
           href={href || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
           className="block"
         >
           {video ? (
@@ -109,8 +110,8 @@ export function ProjectCard({
           </div>
           <a
             href={href || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
             className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             aria-label={`Open ${title}`}
           >

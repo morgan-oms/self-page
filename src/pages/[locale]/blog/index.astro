@@ -1,0 +1,12 @@
+---
+import BlogIndexRoute from "@/routes/BlogIndexRoute.astro";
+import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
+
+const { locale } = Astro.params;
+if (!isLocale(locale) || locale === DEFAULT_LOCALE) {
+  // An empty 404 response makes Astro serve the custom 404 page.
+  return new Response(null, { status: 404 });
+}
+---
+
+<BlogIndexRoute locale={locale} />

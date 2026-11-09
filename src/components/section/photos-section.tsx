@@ -1,5 +1,5 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { DATA } from "@/data/resume";
+import { useResume, useT } from "@/i18n/react";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -11,6 +11,8 @@ const colAspects = [
 ];
 
 export default function PhotosSection() {
+  const DATA = useResume();
+  const t = useT();
   const photos = DATA.photos;
   const col1 = photos.filter((_, i) => i % 3 === 0);
   const col2 = photos.filter((_, i) => i % 3 === 1);
@@ -22,7 +24,7 @@ export default function PhotosSection() {
         <div className="flex items-center w-full">
           <div className="flex-1 h-px bg-linear-to-r from-transparent from-5% via-border via-95% to-transparent" />
           <div className="border bg-primary z-10 rounded-xl px-4 py-1">
-            <span className="text-background text-sm font-medium">Photos</span>
+            <span className="text-background text-sm font-medium">{t("photos.label")}</span>
           </div>
           <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
         </div>

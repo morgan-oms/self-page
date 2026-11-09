@@ -1,0 +1,149 @@
+---
+// Blog post body shared by "/blog/[slug]" and "/[locale]/blog/[slug]".
+import Layout from "@/layouts/Layout.astro";
+import { render } from "astro:content";
+import { getResume } from "@/data/resume";
+import { CONFIG } from "@/data/config";
+import { mdxComponents } from "@/mdx-components";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { LocalizedPost } from "@/lib/blog";
+import { LOCALE_META, localizePath, type Locale } from "@/i18n/config";
+import { formatLongDate, useTranslations } from "@/i18n/ui";
+
+interface Props {
+  locale: Locale;
+  post: LocalizedPost;
+  previousPost: LocalizedPost | null;
+  nextPost: LocalizedPost | null;
+}
+
+const { locale, post, previousPost, nextPost } = Astro.props;
+const t = useTranslations(locale);
+const DATA = getResume(locale);
+const { title, publishedAt, updatedAt, summary, image } = post.entry.data;
+const contentLang = LOCALE_META[post.contentLocale].htmlLang;
+
+const { Content } = await render(post.entry);
+
+const absolute = (path: string) => new URL(path, CONFIG.site.url).href;
+// An untranslated post points search engines to the original language version.
+const canonicalURL = absolute(localizePath(`/blog/${post.slug}`, post.contentLocale));
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  inLanguage: contentLang,
+  datePublished: publishedAt,
+  dateModified: updatedAt ?? publishedAt,
+  description: summary,
+  image: image
+    ? image.startsWith("http")
+      ? image
+      : absolute(image)
+    : absolute(DATA.ogImage),
+  url: canonicalURL,
+  author: {
+    "@type": "Person",
+    name: DATA.name,
+  },
+}).replace(/</g, "\\u003c");
+---
+
+<Layout
+  locale={locale}
+  contentLocale={post.contentLocale}
+  title={title}
+  description={summary}
+  image={image}
+  canonicalURL={canonicalURL}
+>
+  <section id="blog">
+    <script is:inline type="application/ld+json" set:html={jsonLd} />
+    <div class="flex justify-start gap-4 items-center">
+      <a
+        href={localizePath("/blog", locale)}
+        class="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group"
+      >
+        <ChevronLeft
+          className="size-3 group-hover:-translate-x-px transition-transform"
+        />
+        {t("blog.back")}
+      </a>
+    </div>
+
+    {
+      post.isFallback && (
+        <p class="mb-6 rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
+          {t("blog.fallback", { language: t(`language.${post.contentLocale}`) })}
+        </p>
+      )
+    }
+
+    <div class="flex flex-col gap-4" lang={contentLang}>
+      <h1
+        class="title font-semibold text-3xl md:text-4xl tracking-tighter leading-tight"
+      >
+        {title}
+      </h1>
+      <p class="text-sm text-muted-foreground">
+        <time datetime={publishedAt}>{formatLongDate(publishedAt, locale)}</time>
+      </p>
+    </div>
+    <div class="my-6 flex w-full items-center">
+      <div
+        class="flex-1 h-px bg-border"
+        style="mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);"
+      >
+      </div>
+    </div>
+    <article
+      lang={contentLang}
+      class="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert"
+    >
+      <Content components={mdxComponents} />
+    </article>
+
+    <nav class="mt-12 pt-8 max-w-2xl">
+      <div class="flex flex-col sm:flex-row justify-between gap-4">
+        {
+          previousPost ? (
+            <a
+              href={previousPost.url}
+              class="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+            >
+              <span class="flex items-center gap-1 text-xs text-muted-foreground">
+                <ChevronLeft className="size-3" />
+                {t("blog.previous")}
+              </span>
+              <span class="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
+                {previousPost.entry.data.title}
+              </span>
+            </a>
+          ) : (
+            <div class="hidden sm:block flex-1" />
+          )
+        }
+
+        {
+          nextPost ? (
+            <a
+              href={nextPost.url}
+              class="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors text-right"
+            >
+              <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+                {t("blog.next")}
+                <ChevronRight className="size-3" />
+              </span>
+              <span class="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
+                {nextPost.entry.data.title}
+              </span>
+            </a>
+          ) : (
+            <div class="hidden sm:block flex-1" />
+          )
+        }
+      </div>
+    </nav>
+  </section>
+</Layout>

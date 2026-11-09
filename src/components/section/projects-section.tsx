@@ -1,10 +1,15 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ProjectCard } from "@/components/project-card";
-import { DATA } from "@/data/resume";
+import { useLocale, useResume } from "@/i18n/react";
+import { localizePath } from "@/i18n/config";
+import { Icons } from "@/components/icons";
+import { ArrowUpRight } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function ProjectsSection() {
+  const DATA = useResume();
+  const locale = useLocale();
     return (
         <section id="projects">
             <div className="flex min-h-0 flex-col gap-y-8">
@@ -29,7 +34,8 @@ export default function ProjectsSection() {
                         </p>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto auto-rows-fr">
+                <div className="flex flex-col gap-3 w-full max-w-[800px] mx-auto">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 auto-rows-fr">
                     {DATA.projects.map((project, id) => (
                         <BlurFade
                             key={project.title}
@@ -37,7 +43,7 @@ export default function ProjectsSection() {
                             className="h-full"
                         >
                             <ProjectCard
-                                href={project.href}
+                                href={project.href.startsWith("/") ? localizePath(project.href, locale) : project.href}
                                 key={project.title}
                                 title={project.title}
                                 description={project.description}
@@ -49,6 +55,22 @@ export default function ProjectsSection() {
                             />
                         </BlurFade>
                     ))}
+                </div>
+                <BlurFade delay={BLUR_FADE_DELAY * 12 + DATA.projects.length * 0.05}>
+                    <a
+                        href={DATA.sections.projects.moreUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted hover:ring-2 hover:ring-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                        <Icons.github className="size-4" />
+                        {DATA.sections.projects.moreLabel}
+                        <ArrowUpRight
+                            className="size-4 text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                            aria-hidden
+                        />
+                    </a>
+                </BlurFade>
                 </div>
             </div>
         </section>

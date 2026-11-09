@@ -1,22 +1,40 @@
 ---
 import "../styles/global.css";
-import { DATA } from "@/data/resume";
+import { getResume } from "@/data/resume";
 import { CONFIG } from "@/data/config";
 import NavbarIsland from "@/components/NavbarIsland";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  LOCALE_META,
+  getAlternatePaths,
+  getLocaleFromPath,
+  type Locale,
+} from "@/i18n/config";
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   canonicalURL?: string;
+  /** Language of the page. Defaults to the one in the URL. */
+  locale?: Locale;
+  /** Language the main content is written in, when it differs (untranslated post). */
+  contentLocale?: Locale;
 }
+
+const locale = Astro.props.locale ?? getLocaleFromPath(Astro.url.pathname);
+const DATA = getResume(locale);
+const alternates = getAlternatePaths(Astro.url.pathname);
+const absolute = (path: string) => new URL(path, CONFIG.site.url).href;
 
 const {
   title,
   description = DATA.description,
   image,
-  canonicalURL = Astro.url.href,
+  canonicalURL = absolute(Astro.url.pathname),
+  contentLocale = locale,
 } = Astro.props;
 
 const pageTitle = title
@@ -33,7 +51,7 @@ const { baseFontSize } = CONFIG.typography;
 ---
 
 <html
-  lang={CONFIG.site.locale.split("_")[0]}
+  lang={LOCALE_META[locale].htmlLang}
   style={`font-size: ${baseFontSize}%;`}
 >
   <head>
@@ -115,6 +133,17 @@ const { baseFontSize } = CONFIG.typography;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- Same page in other languages (only for translated content) -->
+    {
+      contentLocale === locale &&
+        LOCALES.map((alt) => (
+          <link rel="alternate" hreflang={LOCALE_META[alt].htmlLang} href={absolute(alternates[alt])} />
+        ))
+    }
+    {contentLocale === locale && (
+      <link rel="alternate" hreflang="x-default" href={absolute(alternates[DEFAULT_LOCALE])} />
+    )}
+
     <!-- Robots -->
     <meta name="robots" content={CONFIG.seo.robots} />
     <meta
@@ -128,7 +157,12 @@ const { baseFontSize } = CONFIG.typography;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={DATA.name} />
-    <meta property="og:locale" content={CONFIG.site.locale} />
+    <meta property="og:locale" content={LOCALE_META[contentLocale].ogLocale} />
+    {
+      LOCALES.filter((alt) => alt !== contentLocale).map((alt) => (
+        <meta property="og:locale:alternate" content={LOCALE_META[alt].ogLocale} />
+      ))
+    }
     <meta property="og:image" content={ogImage} />
 
     <!-- Twitter -->
@@ -158,6 +192,6 @@ const { baseFontSize } = CONFIG.typography;
     </div>
 
     <!-- Navbar: ThemeProvider + TooltipProvider + Navbar all in one React island -->
-    <NavbarIsland client:load />
+    <NavbarIsland client:load locale={locale} alternates={alternates} />
   </body>
 </html>

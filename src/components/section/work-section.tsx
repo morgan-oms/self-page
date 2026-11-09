@@ -6,7 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { DATA } from "@/data/resume";
+import { useLocale, useResume } from "@/i18n/react";
+import { formatMonthYear } from "@/i18n/ui";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,8 @@ function LogoImage({ src, alt }: { src: string; alt: string }) {
 }
 
 export default function WorkSection() {
+  const DATA = useResume();
+  const locale = useLocale();
   return (
     <Accordion type="single" collapsible className="w-full grid gap-6">
       {DATA.work.map((work) => (
@@ -70,7 +73,8 @@ export default function WorkSection() {
               </div>
               <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
                 <span>
-                  {work.start} - {work.end ?? DATA.sections.work.presentLabel}
+                  {formatMonthYear(work.start, locale)} -{" "}
+                  {work.end ? formatMonthYear(work.end, locale) : DATA.sections.work.presentLabel}
                 </span>
               </div>
             </div>

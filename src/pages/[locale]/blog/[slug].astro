@@ -1,0 +1,24 @@
+---
+export const prerender = true;
+import BlogPostRoute from "@/routes/BlogPostRoute.astro";
+import { getPostPaths } from "@/lib/blog";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "@/i18n/config";
+
+export async function getStaticPaths() {
+  const locales = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE);
+  const paths = await Promise.all(
+    locales.map(async (locale) =>
+      (await getPostPaths(locale)).map((path) => ({
+        params: { ...path.params, locale },
+        props: path.props,
+      })),
+    ),
+  );
+  return paths.flat();
+}
+
+const locale = Astro.params.locale as Locale;
+const { post, previousPost, nextPost } = Astro.props;
+---
+
+<BlogPostRoute locale={locale} post={post} previousPost={previousPost} nextPost={nextPost} />

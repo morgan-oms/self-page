@@ -1,0 +1,16 @@
+---
+// Home page body shared by "/" and "/[locale]/".
+import Layout from "@/layouts/Layout.astro";
+import HomePage from "@/components/HomePage";
+import type { Locale } from "@/i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<Layout locale={locale}>
+  <HomePage client:only="react" locale={locale} />
+</Layout>

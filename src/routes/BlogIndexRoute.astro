@@ -1,0 +1,48 @@
+---
+// Blog listing shared by "/blog" and "/[locale]/blog". Rendered on request
+// (not prerendered) because of the ?page= query string.
+import Layout from "@/layouts/Layout.astro";
+import BlogList from "@/components/BlogList";
+import { paginate, normalizePage } from "@/lib/pagination";
+import { getPostsForLocale } from "@/lib/blog";
+import { LOCALE_META, type Locale } from "@/i18n/config";
+import { formatLongDate, useTranslations } from "@/i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const PAGE_SIZE = 5;
+
+const allPosts = await getPostsForLocale(locale);
+const pageParam = Astro.url.searchParams.get("page") ?? undefined;
+const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
+const currentPage = normalizePage(pageParam, totalPages);
+const { items: paginatedPosts, pagination } = paginate(allPosts, {
+  page: currentPage,
+  pageSize: PAGE_SIZE,
+});
+
+const posts = paginatedPosts.map((post) => ({
+  id: post.slug,
+  href: post.url,
+  title: post.entry.data.title,
+  publishedAt: formatLongDate(post.entry.data.publishedAt, locale),
+  // Shown as a small badge when the post isn't translated yet.
+  contentLanguage: post.isFallback ? LOCALE_META[post.contentLocale].short : undefined,
+  contentLang: LOCALE_META[post.contentLocale].htmlLang,
+}));
+---
+
+<Layout locale={locale} title={t("blog.title")} description={t("blog.description")}>
+  <BlogList
+    client:load
+    locale={locale}
+    posts={posts}
+    allPostsCount={allPosts.length}
+    pagination={pagination}
+    pageSize={PAGE_SIZE}
+  />
+</Layout>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title>Catalog API: REST endpoints for a comic book catalog with JWT auth and MongoDB</title>
+  <rect width="1200" height="700" fill="#F7F8FA"/>
+  <g stroke="#E3E6EA" stroke-width="1">
+    <path d="M0 100H1200M0 200H1200M0 300H1200M0 400H1200M0 500H1200M0 600H1200"/>
+    <path d="M100 0V700M200 0V700M300 0V700M400 0V700M500 0V700M600 0V700M700 0V700M800 0V700M900 0V700M1000 0V700M1100 0V700"/>
+  </g>
+
+  <text x="90" y="110" font-size="40" font-weight="800" fill="#111827">Catalog API</text>
+  <text x="90" y="150" font-size="24" fill="#6B7280">REST API for a personal comic book collection</text>
+
+  <!-- Comic books -->
+  <g transform="translate(90 220)">
+    <g transform="rotate(-8 90 160)">
+      <rect x="20" y="20" width="170" height="250" rx="12" fill="#FFFFFF" stroke="#1F2937" stroke-width="6"/>
+      <rect x="40" y="44" width="130" height="34" rx="6" fill="#E53935"/>
+      <circle cx="105" cy="160" r="46" fill="#FFD54F" stroke="#1F2937" stroke-width="5"/>
+      <path d="M78 150l20 20 34-38" fill="none" stroke="#1F2937" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g transform="translate(120 30) rotate(6 90 160)">
+      <rect x="20" y="20" width="170" height="250" rx="12" fill="#FFFFFF" stroke="#1F2937" stroke-width="6"/>
+      <rect x="40" y="44" width="130" height="34" rx="6" fill="#1E88E5"/>
+      <path d="M60 230 100 120 120 175 140 140 160 230Z" fill="#90CAF9" stroke="#1F2937" stroke-width="5" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Endpoint panel -->
+  <g transform="translate(560 200)">
+    <rect width="560" height="340" rx="24" fill="#111827"/>
+    <circle cx="36" cy="34" r="9" fill="#EF5350"/>
+    <circle cx="64" cy="34" r="9" fill="#FFCA28"/>
+    <circle cx="92" cy="34" r="9" fill="#66BB6A"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="30" font-weight="700">
+      <text x="40" y="112" fill="#66BB6A">GET</text>
+      <text x="170" y="112" fill="#E5E7EB">/comics</text>
+      <text x="40" y="170" fill="#42A5F5">POST</text>
+      <text x="170" y="170" fill="#E5E7EB">/comics</text>
+      <text x="40" y="228" fill="#FFCA28">PUT</text>
+      <text x="170" y="228" fill="#E5E7EB">/comics/:id</text>
+      <text x="40" y="286" fill="#EF5350">DELETE</text>
+      <text x="170" y="286" fill="#E5E7EB">/comics/:id</text>
+    </g>
+    <!-- lock: routes require login -->
+    <g transform="translate(470 70)">
+      <rect x="0" y="34" width="56" height="46" rx="8" fill="#FFCA28"/>
+      <path d="M12 34V22a16 16 0 0 1 32 0v12" fill="none" stroke="#FFCA28" stroke-width="8"/>
+    </g>
+  </g>
+
+  <!-- Tech pills -->
+  <g font-size="24" font-weight="700" text-anchor="middle">
+    <rect x="560" y="570" width="150" height="50" rx="25" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+    <text x="635" y="604" fill="#1F2937">Express</text>
+    <rect x="726" y="570" width="110" height="50" rx="25" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+    <text x="781" y="604" fill="#1F2937">JWT</text>
+    <rect x="852" y="570" width="110" height="50" rx="25" fill="#FFFFFF" stroke="#1F2937" stroke-width="3"/>
+    <text x="907" y="604" fill="#1F2937">Zod</text>
+    <rect x="978" y="570" width="142" height="50" rx="25" fill="#E8F5E9" stroke="#47A248" stroke-width="3"/>
+    <text x="1049" y="604" fill="#1B5E20">MongoDB</text>
+  </g>
+</svg>

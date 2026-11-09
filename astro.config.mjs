@@ -24,6 +24,14 @@ export default defineConfig({
   site: CONFIG.site.url,
   output: 'server',
 
+  // Languages: English at "/", the others under "/pt-br/" and "/es/".
+  // Keep in sync with LOCALES in src/i18n/config.ts.
+  i18n: {
+    locales: ['en', 'pt-br', 'es'],
+    defaultLocale: 'en',
+    routing: { prefixDefaultLocale: false },
+  },
+
   adapter: cloudflare(),
 
   vite: {
@@ -37,7 +45,12 @@ export default defineConfig({
       rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
       syntaxHighlight: false,
     }),
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', 'pt-br': 'pt-BR', es: 'es' },
+      },
+    }),
   ],
 
   markdown: {

@@ -7,9 +7,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { localizePath, type Locale } from "@/i18n/config";
+import { useLocale, useResume, useT } from "@/i18n/react";
 
-export default function Navbar() {
+const TOOLTIP_CLASS =
+  "rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]";
+
+export default function Navbar({ alternates }: { alternates: Record<Locale, string> }) {
+  const DATA = useResume();
+  const locale = useLocale();
+  const t = useT();
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
       <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
@@ -19,7 +27,7 @@ export default function Navbar() {
             <Tooltip key={item.href}>
               <TooltipTrigger asChild>
                 <a
-                  href={item.href}
+                  href={isExternal ? item.href : localizePath(item.href, locale)}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
                 >
@@ -31,9 +39,9 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                className={TOOLTIP_CLASS}
               >
-                <p>{item.label}</p>
+                <p>{t(item.labelKey)}</p>
                 <TooltipArrow className="fill-primary" />
               </TooltipContent>
             </Tooltip>
@@ -64,9 +72,9 @@ export default function Navbar() {
                 <TooltipContent
                   side="top"
                   sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                  className={TOOLTIP_CLASS}
                 >
-                  <p>{name}</p>
+                  <p>{social.name}</p>
                   <TooltipArrow className="fill-primary" />
                 </TooltipContent>
               </Tooltip>
@@ -85,12 +93,13 @@ export default function Navbar() {
           <TooltipContent
             side="top"
             sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+            className={TOOLTIP_CLASS}
           >
-            <p>Theme</p>
+            <p>{t("nav.theme")}</p>
             <TooltipArrow className="fill-primary" />
           </TooltipContent>
         </Tooltip>
+        <LanguageSwitcher alternates={alternates} tooltipClassName={TOOLTIP_CLASS} />
       </Dock>
     </div>
   );
