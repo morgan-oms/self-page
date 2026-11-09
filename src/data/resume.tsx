@@ -273,7 +273,7 @@ const RESUME = {
         "pt-br": "Bacharelado em Ciência da Computação",
         es: "Licenciatura en Ciencias de la Computación",
       },
-      logoUrl: "https://www.google.com/s2/favicons?domain=ufrpe.br&sz=128",
+      logoUrl: "/logos/ufrpe.png",
       start: "2016",
       end: "2021",
     },
