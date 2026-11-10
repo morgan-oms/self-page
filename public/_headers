@@ -1,0 +1,7 @@
+# Security headers for static files served by Cloudflare Workers assets.
+# Server-rendered pages get the same headers from src/middleware.ts.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

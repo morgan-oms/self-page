@@ -3,9 +3,9 @@ export const CONFIG = {
   // Site Settings
   // ---------------------------------------------------------------------------
   site: {
-    // TODO: replace with the real address after the first Cloudflare deploy
-    // (*.workers.dev) or once a custom domain is registered.
-    url: "https://self-page.workers.dev",
+    // Production address. Used for canonical URLs, sitemap, hreflang and
+    // social images. Must match the custom domain in wrangler.jsonc.
+    url: "https://morganoms.dev",
     locale: "en_US",
     twitterHandle: "",
   },

@@ -9,5 +9,11 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	// Custom Domains: Cloudflare creates the DNS records and the SSL
+	// certificate for these hostnames on deploy (zone must be in this account).
+	"routes": [
+		{ "pattern": "morganoms.dev", "custom_domain": true },
+		{ "pattern": "www.morganoms.dev", "custom_domain": true }
+	]
 }

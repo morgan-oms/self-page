@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, sessionDrivers } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
@@ -32,7 +32,11 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
 
-  adapter: cloudflare(),
+  // The site doesn't use Astro sessions or astro:assets image optimization.
+  // Without these two settings the adapter would add a KV namespace (SESSION)
+  // and a Cloudflare Images binding (IMAGES) to every deploy.
+  session: { driver: sessionDrivers.memory() },
+  adapter: cloudflare({ imageService: 'passthrough' }),
 
   vite: {
     plugins: [tailwindcss()],
