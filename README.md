@@ -10,7 +10,7 @@
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com)
 [![Idiomas](https://img.shields.io/badge/idiomas-EN%20·%20PT%20·%20ES-1E88E5)](#idiomas)
 
-[LinkedIn](https://www.linkedin.com/in/morgan-oliveira/) · [GitHub](https://github.com/morgan-oms) · [Instagram](https://www.instagram.com/morganoms.dev/)
+**[morganoms.dev](https://morganoms.dev)** · [LinkedIn](https://www.linkedin.com/in/morgan-oliveira/) · [GitHub](https://github.com/morgan-oms) · [Instagram](https://www.instagram.com/morganoms.dev/)
 
 ![Página inicial do site em português](./docs/preview.png)
 
@@ -152,17 +152,47 @@ docs/                  # Imagens usadas neste README
 
 ## Publicação
 
-O site é publicado no **Cloudflare Workers**. O projeto já traz o `wrangler.jsonc` configurado.
+O site está no ar em **[morganoms.dev](https://morganoms.dev)**, servido pelo **Cloudflare Workers**. O `www.morganoms.dev` aponta para o mesmo Worker.
 
-1. No painel da Cloudflare, vá em **Workers & Pages → Create → Import a repository** e conecte este repositório.
-2. Use `pnpm build` como comando de build e `npx wrangler deploy` como comando de deploy.
-3. A partir daí, cada `git push` na `main` publica o site automaticamente.
+### Deploy automático
 
-Depois do primeiro deploy, atualize `site.url` em [`src/data/config.ts`](src/data/config.ts) com o endereço definitivo (`*.workers.dev` ou o domínio próprio). É ele que gera os links canônicos, o sitemap e as imagens de compartilhamento.
+O repositório está conectado ao **Workers Builds**, a integração da Cloudflare com o GitHub:
+
+| Evento | O que acontece |
+| --- | --- |
+| Push na `main` | Build e publicação em produção, em cerca de um minuto |
+| Push em outra branch | Build de prévia, com uma URL própria para revisar antes de publicar |
+
+Configuração em **Workers & Pages → self-page → Settings → Builds**:
+
+| Campo | Valor |
+| --- | --- |
+| Build command | `pnpm build` |
+| Deploy command | `npx wrangler deploy` |
+| Root directory | `/` |
+| Versão do Node | definida no [`.node-version`](.node-version) |
+
+Os logs de cada build ficam na aba **Deployments** do Worker.
+
+### Configuração do Worker
+
+- [`wrangler.jsonc`](wrangler.jsonc) define o nome do Worker (`self-page`), os arquivos estáticos e os domínios. Os *Custom Domains* `morganoms.dev` e `www.morganoms.dev` são criados pela Cloudflare no deploy, junto com o DNS e o certificado HTTPS.
+- [`public/_headers`](public/_headers) aplica os cabeçalhos de segurança nas páginas estáticas. As páginas renderizadas no servidor recebem os mesmos cabeçalhos pelo [`src/middleware.ts`](src/middleware.ts).
+- Se o domínio mudar, atualize também o `site.url` em [`src/data/config.ts`](src/data/config.ts). É ele que gera os links canônicos, o sitemap e o `hreflang`.
+
+### Deploy manual
+
+Para publicar direto da sua máquina, sem passar pelo GitHub:
+
+```bash
+pnpm exec wrangler login
+pnpm build && pnpm exec wrangler deploy
+```
 
 ## Próximos passos
 
-- [ ] Publicar na Cloudflare e definir o domínio próprio
+- [x] Publicar na Cloudflare com domínio próprio e deploy automático
+- [ ] Redirecionar `www.morganoms.dev` para `morganoms.dev`
 - [ ] Criar uma imagem de compartilhamento (Open Graph) própria
 - [ ] Adicionar comentários nos posts com [Giscus](https://giscus.app)
 - [ ] Adicionar busca estática com [Pagefind](https://pagefind.app)
