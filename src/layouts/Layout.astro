@@ -52,25 +52,22 @@ const { baseFontSize } = CONFIG.typography;
 
 <html
   lang={LOCALE_META[locale].htmlLang}
+  class="dark"
   style={`font-size: ${baseFontSize}%;`}
 >
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#121212" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- FOUC prevention: apply stored theme before first paint -->
+    <!-- Theme: dark by default. Only a visitor who explicitly chose the light
+         theme (saved by the toggle) gets light. The page starts with the
+         "dark" class so there is no flash even before this script runs. -->
     <script is:inline>
       (function () {
         try {
-          var theme = localStorage.getItem("theme");
-          if (
-            theme === "dark" ||
-            (!theme &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            document.documentElement.classList.add("dark");
-          } else {
+          if (localStorage.getItem("theme") === "light") {
             document.documentElement.classList.remove("dark");
           }
         } catch (_) {}
@@ -187,7 +184,7 @@ const { baseFontSize } = CONFIG.typography;
     </div>
 
     <!-- Main content wrapper - matches template's z-10 container exactly -->
-    <div class="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+    <div class="relative z-10 max-w-2xl mx-auto py-12 pb-[calc(6rem+env(safe-area-inset-bottom))] sm:py-24 px-6">
       <slot />
     </div>
 

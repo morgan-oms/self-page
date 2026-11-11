@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
+import { useT } from "@/i18n/react";
 import { cn } from "@/lib/utils";
 
 export function ModeToggle({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const t = useT();
 
   return (
     <Button
@@ -12,10 +14,13 @@ export function ModeToggle({ className }: { className?: string }) {
       variant="link"
       size="icon"
       className={cn(className)}
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      aria-label={t("nav.theme")}
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
     >
-      <SunIcon className="h-full w-full" />
-      <MoonIcon className="hidden h-full w-full" />
+      {/* Shows the theme you will switch to. The CSS `dark:` variant follows
+          the <html class="dark"> set before first paint, so there is no flash. */}
+      <SunIcon className="hidden h-full w-full dark:block" />
+      <MoonIcon className="block h-full w-full dark:hidden" />
     </Button>
   );
 }

@@ -11,6 +11,8 @@ import { Dart } from "@/components/ui/svgs/dart";
 import { Swift } from "@/components/ui/svgs/swift";
 import { SpringBoot } from "@/components/ui/svgs/springboot";
 import { Mongodb } from "@/components/ui/svgs/mongodb";
+import { Postgresql } from "@/components/ui/svgs/postgresql";
+import { Firebase } from "@/components/ui/svgs/firebase";
 import { CONFIG } from "@/data/config";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "@/i18n/config";
 
@@ -140,6 +142,8 @@ const RESUME = {
     { name: "React", icon: ReactLight },
     { name: "Node.js", icon: Nodejs },
     { name: "MongoDB", icon: Mongodb },
+    { name: "PostgreSQL", icon: Postgresql },
+    { name: "Firebase", icon: Firebase },
   ],
   // `href` is the path without language prefix; the navbar adds it.
   navbar: [
@@ -153,95 +157,153 @@ const RESUME = {
         name: "GitHub",
         url: "https://github.com/morgan-oms",
         icon: Icons.github,
-        navbar: true,
       },
       LinkedIn: {
         name: "LinkedIn",
         url: "https://www.linkedin.com/in/morgan-oliveira/",
         icon: Icons.linkedin,
-        navbar: true,
       },
       Instagram: {
         name: "Instagram",
         url: "https://www.instagram.com/morganoms.dev/",
         icon: Icons.instagram,
-        navbar: true,
       },
       email: {
         name: "Gmail",
         url: "mailto:morgansiqueir@gmail.com",
         icon: Icons.email,
-        navbar: true,
       },
     },
   },
 
+  // Each company has one or more `positions`, newest first. With a single
+  // position the card shows the role and skills directly; with several (a
+  // promotion inside the same company) it shows a LinkedIn-style timeline.
+  // `start`/`end` on the company are the total time there.
   work: [
     {
-      company: "will bank",
+      company: "Willbank",
       href: "https://www.willbank.com.br",
       badges: [],
       location: "Espírito Santo, Brazil",
-      title: { en: "Software Engineer", "pt-br": "Engenheiro de Software", es: "Ingeniero de Software" },
       logoUrl: "https://www.google.com/s2/favicons?domain=willbank.com.br&sz=128",
       start: "2022-06",
       end: undefined,
-      description: {
-        en: "Building credit products — personal loans and FGTS birthday withdrawal (Saque-Aniversário). Mobile development with Dart, Kotlin and Swift, plus microservices with Java Spring Boot and Kotlin.",
-        "pt-br":
-          "Desenvolvimento de produtos de crédito — empréstimos e Saque-Aniversário do FGTS. Desenvolvimento mobile com Dart, Kotlin e Swift, além de microsserviços com Java Spring Boot e Kotlin.",
-        es: "Desarrollo de productos de crédito: préstamos personales y retiro anual del FGTS (Saque-Aniversário). Desarrollo móvil con Dart, Kotlin y Swift, además de microservicios con Java Spring Boot y Kotlin.",
-      },
+      positions: [
+        {
+          title: {
+            en: "Senior Software Engineer",
+            "pt-br": "Engenheiro de Software Sênior",
+            es: "Ingeniero de Software Senior",
+          },
+          start: "2025-08",
+          end: undefined,
+          hardSkills: {
+            en: ["Credit products: personal loans and FGTS birthday withdrawal", "Mobile development with Dart, Kotlin and Swift", "Microservices with Java Spring Boot and Kotlin"],
+            "pt-br": ["Produtos de crédito: empréstimos e Saque-Aniversário do FGTS", "Desenvolvimento mobile com Dart, Kotlin e Swift", "Microsserviços com Java Spring Boot e Kotlin"],
+            es: ["Productos de crédito: préstamos y retiro anual del FGTS", "Desarrollo móvil con Dart, Kotlin y Swift", "Microservicios con Java Spring Boot y Kotlin"],
+          },
+          softSkills: {
+            en: ["Focus on the user's financial experience", "Versatility across mobile and back-end"],
+            "pt-br": ["Foco na experiência financeira do usuário", "Versatilidade entre mobile e back-end"],
+            es: ["Enfoque en la experiencia financiera del usuario", "Versatilidad entre móvil y back-end"],
+          },
+        },
+        {
+          title: {
+            en: "Mid-level Software Engineer",
+            "pt-br": "Engenheiro de Software Pleno",
+            es: "Ingeniero de Software Semi Senior",
+          },
+          start: "2022-06",
+          end: "2025-08",
+          // Suggested content: review and adjust to what you actually did.
+          hardSkills: {
+            en: ["Feature development for the credit products in the app (Dart/Flutter)", "App integration with APIs and microservices", "Testing and code review"],
+            "pt-br": ["Desenvolvimento de funcionalidades dos produtos de crédito no app (Dart/Flutter)", "Integração do app com APIs e microsserviços", "Testes e code review"],
+            es: ["Desarrollo de funcionalidades de los productos de crédito en la app (Dart/Flutter)", "Integración de la app con APIs y microservicios", "Pruebas y code review"],
+          },
+          softSkills: {
+            en: ["Growing autonomy in delivering features", "Continuous learning of new technologies"],
+            "pt-br": ["Autonomia crescente na entrega de funcionalidades", "Aprendizado contínuo de novas tecnologias"],
+            es: ["Autonomía creciente en la entrega de funcionalidades", "Aprendizaje continuo de nuevas tecnologías"],
+          },
+        },
+      ],
     },
     {
       company: "Raro Labs",
       href: "https://rarolabs.com.br",
       badges: [],
       location: "Belo Horizonte, Brazil",
-      title: {
-        en: "Flutter Mobile Developer",
-        "pt-br": "Desenvolvedor Mobile Flutter",
-        es: "Desarrollador Móvil Flutter",
-      },
       logoUrl: "/logos/raro-labs.png",
       start: "2021-06",
       end: "2022-06",
-      description: {
-        en: "Worked on Banco BMG's mobile app with Flutter/Dart: REST API integration, SOLID and Clean Architecture, Git Flow, Scrum, automated tests and code review.",
-        "pt-br":
-          "Atuei no app do Banco BMG com Flutter/Dart: integração com APIs REST, SOLID e Clean Architecture, Git Flow, Scrum, testes automatizados e code review.",
-        es: "Trabajé en la app de Banco BMG con Flutter/Dart: integración con APIs REST, SOLID y Clean Architecture, Git Flow, Scrum, pruebas automatizadas y code review.",
-      },
+      positions: [
+        {
+          title: {
+            en: "Flutter Mobile Developer",
+            "pt-br": "Desenvolvedor Mobile Flutter",
+            es: "Desarrollador Móvil Flutter",
+          },
+          start: "2021-06",
+          end: "2022-06",
+          hardSkills: {
+            en: ["Banco BMG's mobile app in Flutter/Dart", "REST API integration", "SOLID and Clean Architecture", "Testing"],
+            "pt-br": ["App do Banco BMG em Flutter/Dart", "Integração com APIs REST", "SOLID e Clean Architecture", "Testes"],
+            es: ["App de Banco BMG en Flutter/Dart", "Integración con APIs REST", "SOLID y Clean Architecture", "Pruebas"],
+          },
+          softSkills: {
+            en: ["Agile teamwork with Scrum and Git Flow", "Code review and team collaboration"],
+            "pt-br": ["Trabalho em time ágil com Scrum e Git Flow", "Code review e colaboração com o time"],
+            es: ["Trabajo en equipo ágil con Scrum y Git Flow", "Code review y colaboración con el equipo"],
+          },
+        },
+      ],
     },
     {
       company: "Pluri Educacional",
       href: undefined,
       badges: [],
       location: "Recife, Brazil",
-      title: { en: "Software Engineer", "pt-br": "Engenheiro de Software", es: "Ingeniero de Software" },
       logoUrl: "/logos/pluri.png",
       start: "2019-06",
       end: "2021-06",
-      description: {
-        en: "Front-end web development with Angular and back-end APIs with Lumen (PHP).",
-        "pt-br": "Desenvolvimento web front-end com Angular e APIs back-end com Lumen (PHP).",
-        es: "Desarrollo web front-end con Angular y APIs back-end con Lumen (PHP).",
-      },
+      positions: [
+        {
+          title: { en: "Software Engineer", "pt-br": "Engenheiro de Software", es: "Ingeniero de Software" },
+          start: "2019-06",
+          end: "2021-06",
+          hardSkills: {
+            en: ["Front-end web with Angular", "Back-end APIs with Lumen (PHP)"],
+            "pt-br": ["Front-end web com Angular", "APIs back-end com Lumen (PHP)"],
+            es: ["Front-end web con Angular", "APIs back-end con Lumen (PHP)"],
+          },
+          softSkills: { en: [], "pt-br": [], es: [] },
+        },
+      ],
     },
     {
       company: "Bravil Sistemas e Informática",
       href: undefined,
       badges: [],
       location: "Garanhuns, Brazil",
-      title: { en: "Software Engineer", "pt-br": "Engenheiro de Software", es: "Ingeniero de Software" },
       logoUrl: "/logos/bravil.png",
       start: "2017-05",
       end: "2020-11",
-      description: {
-        en: "Mobile applications with Flutter/Dart and web development with React and Node.js.",
-        "pt-br": "Aplicações mobile com Flutter/Dart e desenvolvimento web com React e Node.js.",
-        es: "Aplicaciones móviles con Flutter/Dart y desarrollo web con React y Node.js.",
-      },
+      positions: [
+        {
+          title: { en: "Software Engineer", "pt-br": "Engenheiro de Software", es: "Ingeniero de Software" },
+          start: "2017-05",
+          end: "2020-11",
+          hardSkills: {
+            en: ["Mobile apps with Flutter/Dart", "Web development with React and Node.js"],
+            "pt-br": ["Aplicações mobile com Flutter/Dart", "Desenvolvimento web com React e Node.js"],
+            es: ["Aplicaciones móviles con Flutter/Dart", "Desarrollo web con React y Node.js"],
+          },
+          softSkills: { en: [], "pt-br": [], es: [] },
+        },
+      ],
     },
   ],
   education: [

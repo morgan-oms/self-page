@@ -25,7 +25,7 @@ export const CONFIG = {
   typography: {
     // Base font size as a percentage. 100 = browser default (16px).
     // 110 = 10% larger or 90 = 10% smaller, across all text, headings, and links simultaneously.
-    baseFontSize: 115,
+    baseFontSize: 120,
   },
 
   // ---------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+import { ContactLinks } from "@/components/contact-links";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { useResume } from "@/i18n/react";
 
@@ -26,6 +27,7 @@ export default function ContactSection() {
         <p className="mx-auto max-w-lg text-muted-foreground text-balance">
           {DATA.sections.contact.text}
         </p>
+        <ContactLinks align="center" className="mt-2" />
       </div>
     </div>
   );

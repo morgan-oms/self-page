@@ -8,6 +8,12 @@ const en = {
   "nav.blog": "Blog",
   "nav.theme": "Theme",
   "nav.language": "Language",
+  "nav.contact": "Contact",
+  "work.hard": "Hard skills",
+  "work.soft": "Soft skills",
+  "work.more": "See more details",
+  "work.less": "See fewer details",
+  "contact.links": "Contact links",
   "photos.label": "Photos",
   "blog.title": "Blog",
   "blog.description":
@@ -35,6 +41,12 @@ const ptBr = {
   "nav.blog": "Blog",
   "nav.theme": "Tema",
   "nav.language": "Idioma",
+  "nav.contact": "Contato",
+  "work.hard": "Hard skills",
+  "work.soft": "Soft skills",
+  "work.more": "Ver mais detalhes",
+  "work.less": "Ver menos detalhes",
+  "contact.links": "Links de contato",
   "photos.label": "Fotos",
   "blog.title": "Blog",
   "blog.description":
@@ -61,6 +73,12 @@ const es = {
   "nav.blog": "Blog",
   "nav.theme": "Tema",
   "nav.language": "Idioma",
+  "nav.contact": "Contacto",
+  "work.hard": "Habilidades técnicas",
+  "work.soft": "Habilidades blandas",
+  "work.more": "Ver más detalles",
+  "work.less": "Ver menos detalles",
+  "contact.links": "Enlaces de contacto",
   "photos.label": "Fotos",
   "blog.title": "Blog",
   "blog.description":
@@ -105,6 +123,20 @@ export function formatMonthYear(value: string, locale: Locale): string {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(Date.UTC(year, month - 1, 1)));
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** "2022-06" -> "Jun 2022" / "Jun. 2022" / "Jun 2022" (short month, for narrow screens). */
+export function formatMonthYearShort(value: string, locale: Locale): string {
+  const [year, month] = value.split("-").map(Number);
+  if (!month) return String(year);
+  const text = new Intl.DateTimeFormat(locale, {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  })
+    .format(new Date(Date.UTC(year, month - 1, 1)))
+    .replace(" de ", " ");
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 

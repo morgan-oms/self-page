@@ -35,6 +35,8 @@ export default defineConfig({
   // The site doesn't use Astro sessions or astro:assets image optimization.
   // Without these two settings the adapter would add a KV namespace (SESSION)
   // and a Cloudflare Images binding (IMAGES) to every deploy.
+  // `memory` exists at runtime, but Astro's TypeScript types don't list it.
+  // @ts-ignore
   session: { driver: sessionDrivers.memory() },
   adapter: cloudflare({ imageService: 'passthrough' }),
 

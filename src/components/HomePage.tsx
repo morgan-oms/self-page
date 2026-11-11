@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LocaleProvider, useResume, useT } from "@/i18n/react";
 import type { Locale } from "@/i18n/config";
 import Markdown from "react-markdown";
+import { ContactLinks } from "@/components/contact-links";
 import ContactSection from "@/components/section/contact-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import PhotosSection from "@/components/section/photos-section";
@@ -57,28 +58,30 @@ function Sections() {
                 href={education.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-x-3 justify-between group"
+                className="group flex items-center justify-between gap-x-3"
               >
-                <div className="flex items-center gap-x-3 flex-1 min-w-0">
+                {/* Same layout on every screen, matching Experience: logo, then a text
+                    column with name, period and degree. */}
+                <div className="flex min-w-0 flex-1 items-center gap-x-3">
                   {education.logoUrl ? (
                     <img
                       src={education.logoUrl}
                       alt={education.school}
-                      className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
+                      className="size-[40px] sm:size-[44px] p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
                     />
                   ) : (
-                    <div className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
+                    <div className="size-[40px] sm:size-[44px] p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
                   )}
-                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                    <div className="font-semibold leading-none flex items-center gap-2">
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <div className="flex items-center gap-2 text-[1.0625rem] font-semibold leading-snug">
                       {education.school}
-                      <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" aria-hidden />
+                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" aria-hidden />
                     </div>
-                    <div className="font-sans text-sm text-muted-foreground">{education.degree}</div>
+                    <span className="text-[0.8125rem] tabular-nums text-muted-foreground">
+                      {education.start} - {education.end}
+                    </span>
+                    <div className="font-sans text-[0.9375rem] text-muted-foreground">{education.degree}</div>
                   </div>
-                </div>
-                <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                  <span>{education.start} - {education.end}</span>
                 </div>
               </a>
             </BlurFade>
@@ -152,6 +155,7 @@ function Sections() {
                 delay={BLUR_FADE_DELAY}
                 text={DATA.description}
               />
+              <ContactLinks delay={BLUR_FADE_DELAY * 2} className="mt-3" />
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
               <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">

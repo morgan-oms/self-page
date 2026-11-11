@@ -13,7 +13,7 @@ interface NavbarIslandProps {
 export default function NavbarIsland({ locale, alternates }: NavbarIslandProps) {
   return (
     <LocaleProvider locale={locale}>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <TooltipProvider delayDuration={0}>
           <Navbar alternates={alternates} />
         </TooltipProvider>
